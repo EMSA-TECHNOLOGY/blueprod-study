@@ -5,6 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "start": "ts-node -r tsconfig-paths/register src/server.ts",
     "watch": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node ./src/server.ts",
     "debug": "nodemon --config nodemon-debug.json"
   },
