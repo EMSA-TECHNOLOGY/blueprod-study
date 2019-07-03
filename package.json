@@ -1,5 +1,5 @@
 {
-  "name": "blue-prod-study",
+  "name": "blueprod-study",
   "version": "0.0.1",
   "description": "Project for demonstration and test for building blueprod product",
   "main": "dist/server.js",
