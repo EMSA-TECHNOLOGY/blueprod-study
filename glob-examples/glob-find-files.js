@@ -1,13 +1,10 @@
 /* Thanh LE - EMSA TECHNOLOGY */
 
-/* Test glob find files */
-
-var glob = require("glob");
+const glob = require("glob");
 
 let files;
 
 //myProject/src/**/!(*.js|*.map|*.src)
-// files = glob.sync(__dirname +'/config/**/*.js');
 
 console.log('for test env');
 files = glob.sync(__dirname +'/sample-files/**/!(development.js|development.yaml|development.json|production.js|production.yaml|production.json)', {nodir: true});
