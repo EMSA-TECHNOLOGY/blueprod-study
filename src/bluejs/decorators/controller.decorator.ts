@@ -14,10 +14,12 @@ export default function controller(prefix: string) {
 
                 switch (fn.action) {
                     case 'get': {
-                        console.info('Bind route: ' + path + ' for controller: ' + constructor.name);
-                        bluejs.router.get(path, name);
+                        console.info('Bind route: ' + fn.action + ' ' + path + ' for action: ' + [constructor.name, fn.name].join('.'));
+                        bluejs.router.get(path, fn);
                         break
                     }
+
+                    // TODO
 
                     default: {
                         console.error('Invalid route: ' + path);

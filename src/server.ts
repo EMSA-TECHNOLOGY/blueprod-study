@@ -1,14 +1,15 @@
 import {Bluejs} from "./bluejs"
 
-const {router} = new Bluejs({port: 3000, debug: true, middleware: [logMiddleware]});
+const options = {
+    port: 3000,
+    debug: true,
+    middleware: [logMiddleware],
+    srcDir: __dirname,
+    bootstrapDir: 'modules',
+    bootstrapExt: 'module.ts'
+};
 
-import abc from "./modules/user/user.controller"
-
-var a = new abc();
-
-// router.get('/*', async (ctx) => {
-//     ctx.body = 'Hello World!';
-// });
+const bluejs = new Bluejs(options);
 
 async function logMiddleware(ctx: any, next: any) {
     console.log('Url:', ctx.url);
