@@ -19,7 +19,6 @@ export class Bluejs {
         this.app = new Koa();
         this.debug = options.debug;
         this.router = new Router();
-        this.app.use(this.router.routes());
 
         if (typeof options.middleware === "object" && options.middleware.length > 0) {
             options.middleware.forEach((mdw: Function) => {
@@ -27,6 +26,7 @@ export class Bluejs {
             });
         }
 
+        this.app.use(this.router.routes());
         this.app.listen(options.port);
         Bluejs.singleton = this;
         Bluejs.bootstrap(options.srcDir, options.bootstrapDir, options.bootstrapExt);

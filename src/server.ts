@@ -9,10 +9,10 @@ const options = {
     bootstrapExt: 'module.ts'
 };
 
-const bluejs = new Bluejs(options);
+new Bluejs(options);
 
 async function logMiddleware(ctx: any, next: any) {
-    console.log('Url:', ctx.url);
+    console.log('Middleware execute - Url:', ctx.url);
 
     await next();
 }
