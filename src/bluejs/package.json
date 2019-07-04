@@ -1,0 +1,19 @@
+{
+  "name": "bluejs",
+  "version": "0.0.1",
+  "description": "",
+  "main": "",
+  "scripts": {},
+  "repository": {},
+  "keywords": [],
+  "author": "EMSA Technology",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EMSA-TECHNOLOGY/blueprod-study/issues"
+  },
+  "homepage": "https://github.com/EMSA-TECHNOLOGY/blueprod-study#readme",
+  "dependencies": {
+    "koa": "^2.7.0",
+    "koa-router": "^7.4.0"
+  }
+}

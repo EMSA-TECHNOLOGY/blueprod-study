@@ -1,15 +1,17 @@
-import * as Koa from 'koa';
-import * as Router from 'koa-router';
+import {Bluejs} from "./bluejs"
 
-const app = new Koa();
-const router = new Router();
+const {router} = new Bluejs({port: 3000, debug: true, middleware: [logMiddleware]});
 
-router.get('/*', async (ctx) => {
-    ctx.body = 'Hello World!';
-});
+import abc from "./modules/user/user.controller"
 
-app.use(router.routes());
+var a = new abc();
 
-app.listen(3000);
+// router.get('/*', async (ctx) => {
+//     ctx.body = 'Hello World!';
+// });
 
-console.log('Server running on port 3000');
+async function logMiddleware(ctx: any, next: any) {
+    console.log('Url:', ctx.url);
+
+    await next();
+}
