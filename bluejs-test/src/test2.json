@@ -1,0 +1,69 @@
+{
+  "body": {
+    "id": "uplink-6403-4e3b",
+    "device_id": 85568392920039490,
+    "group_id": 1,
+    "group": "cartesiam",
+    "profile_id": 2,
+    "profile": "bob",
+    "type": "uplink",
+    "timestamp": "2019-06-26T10:20:56.738Z",
+    "count": 6403,
+    "payload_encrypted": "75c61721",
+    "payload_cleartext": "21fadffb",
+    "device_properties": {
+      "appeui": "70b3d531c0000000",
+      "deveui": "70b3d531c00009a8",
+      "external_id": "Movee",
+      "product_version": "1.3.1"
+    },
+    "protocol_data": {
+      "AppNonce": "18f2cc",
+      "DevAddr": "0e20ffd3",
+      "DevNonce": "4e3b",
+      "NetID": "000007",
+      "best_gateway_id": "M20197",
+      "gateways": 1,
+      "lora_version": 0,
+      "noise": -115.32474080687587,
+      "port": 1,
+      "requested_nbrep": 1,
+      "rssi": -113,
+      "sf": 12,
+      "signal": -116.82474080687587,
+      "snr": -1.5
+    },
+    "lat": 43.796812432087854,
+    "lng": 7.324434401364582,
+    "geolocation_type": "network",
+    "geolocation_precision": 5000,
+    "city_code": "06048",
+    "city_name": "Contes",
+    "delivered_at": null
+  },
+  "query": {},
+  "method": "POST",
+  "url": "/",
+  "host": "cartesiam.objenious.eolane-fm.net",
+  "path": "/",
+  "options": {
+    "detectedVerb": {
+      "verb": "all",
+      "original": "/*",
+      "path": "/*"
+    },
+    "controller": "page",
+    "action": "resolvehomeview",
+    "skipRegex": [],
+    "_middlewareType": "CSRF HOOK: CSRF"
+  },
+  "contentType": "application/json",
+  "acceptJSON": false,
+  "acceptXML": false,
+  "acceptYAML": false,
+  "isLocalhost": false,
+  "clientAddress": "::ffff:127.0.0.1",
+  "isDesktopMode": true,
+  "isApiRequest": false,
+  "id": "uplink-6403-4e3b"
+}

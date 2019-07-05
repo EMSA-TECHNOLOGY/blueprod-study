@@ -1,10 +1,12 @@
-import {controller, get} from "../../bluejs/decorators"
+import {Next} from '../../bluejs/core';
+import {controller, get} from '../../bluejs/decorators';
 
 @controller('user')
 export default class UserController {
+
     @get('')
-    async getUser(ctx: any, next: Function) {
-        console.log("getUser");
+    async getUser(ctx: any, next: Next) {
+        console.log('getUser');
 
         return next();
     }

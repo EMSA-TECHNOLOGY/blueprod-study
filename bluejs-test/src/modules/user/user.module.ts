@@ -1,3 +1,3 @@
-import UserController from './user.controller'
+import UserController from './user.controller';
 
 new UserController();

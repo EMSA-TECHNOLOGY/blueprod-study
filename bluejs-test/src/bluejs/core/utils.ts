@@ -1,7 +1,7 @@
-import * as fs from "fs";
-import {join} from "path";
+import * as fs from 'fs';
+import {join} from 'path';
 
-export default class Utils {
+export class Utils {
     static async bootstrap(dir: string, ext: string = 'module.ts') {
         let filesAndFolders: string[] = fs.readdirSync(dir);
 

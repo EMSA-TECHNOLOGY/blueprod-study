@@ -1,9 +1,9 @@
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
 import {join} from 'path';
-import Utils from './utils'
+import {Utils} from './utils';
 
-import {createServerOptions} from "./interfaces";
+import {Middleware, CreateServerOptions} from './interfaces';
 
 export class Bluejs {
     private static singleton: Bluejs;
@@ -11,7 +11,7 @@ export class Bluejs {
     private debug: boolean;
     public readonly router: Router;
 
-    constructor(options?: createServerOptions) {
+    constructor(options?: CreateServerOptions) {
         if (Bluejs.singleton) {
             return Bluejs.singleton;
         }
@@ -20,8 +20,8 @@ export class Bluejs {
         this.debug = options.debug;
         this.router = new Router();
 
-        if (typeof options.middleware === "object" && options.middleware.length > 0) {
-            options.middleware.forEach((mdw: Function) => {
+        if (typeof options.middleware === 'object' && options.middleware.length > 0) {
+            options.middleware.forEach((mdw: Middleware) => {
                 this.app.use(mdw as any);
             });
         }
@@ -44,6 +44,6 @@ export class Bluejs {
             const path = join(srcDir, dir);
 
             await Utils.bootstrap(path, bootstrapExt);
-        })
+        });
     }
 }
