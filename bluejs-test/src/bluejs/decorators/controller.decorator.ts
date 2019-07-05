@@ -1,9 +1,10 @@
+import {Constructor} from '../core';
 import {Bluejs} from '../core';
 
 export function controller(prefix: string) {
     const bluejs = new Bluejs();
 
-    return (constructor: Function) => {
+    return (constructor: Constructor) => {
         const prototype = constructor.prototype;
 
         Object.getOwnPropertyNames(prototype).forEach((name) => {
