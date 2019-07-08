@@ -9,7 +9,7 @@ router.swagger({
   version: '1.0.0',
 
   // [optional] default is root path.
-  prefix: '/api/v1',
+  prefix: '/api/v2',
 
   // [optional] default is /swagger-html
   swaggerHtmlEndpoint: '/swagger-html',
@@ -47,4 +47,3 @@ router.mapDir(__dirname, {
 });
 
 export default router;
-// module.exports = router;
