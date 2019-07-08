@@ -1,0 +1,39 @@
+{
+  "name": "blueprod-study",
+  "version": "0.0.1",
+  "description": "Project for demonstration and test for building blueprod product",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "start": "ts-node -r tsconfig-paths/register src/server.ts",
+    "watch": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node ./src/server.ts",
+    "debug": "nodemon --config nodemon-debug.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EMSA-TECHNOLOGY/blueprod-study.git"
+  },
+  "keywords": [
+    "blueprod",
+    "study"
+  ],
+  "author": "EMSA Technology",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EMSA-TECHNOLOGY/blueprod-study/issues"
+  },
+  "homepage": "https://github.com/EMSA-TECHNOLOGY/blueprod-study#readme",
+  "dependencies": {
+    "koa": "^2.7.0",
+    "koa-router": "^7.4.0",
+    "koa-swagger-decorator": "^1.5.16"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.0.49",
+    "@types/koa-router": "^7.0.42",
+    "nodemon": "^1.19.1",
+    "ts-node": "^8.3.0",
+    "tsconfig-paths": "^3.8.0",
+    "typescript": "^3.5.2"
+  }
+}
