@@ -1,32 +1,40 @@
-import {Bluejs} from "../"
+import {Constructor} from '../core';
+import {Bluejs} from '../core';
 
-export default function controller(prefix: string) {
-    const bluejs = new Bluejs();
+export function controller(prefix: string) {
+    if (!Bluejs) {
+        setTimeout(function () {
+            controller(prefix);
+        }, 500);
+    } else {
+        const bluejs = new Bluejs();
 
-    return function (constructor: Function) {
-        const prototype = constructor.prototype;
+        return (constructor: any) => {
+            const prototype = constructor.prototype;
 
-        Object.getOwnPropertyNames(prototype).forEach(function (name) {
-            const fn = prototype[name];
+            Object.getOwnPropertyNames(prototype).forEach((name) => {
+                const fn = prototype[name];
 
-            if (typeof fn === "function" && typeof fn.path !== "undefined") {
-                const path: any = '/' + prefix + fn.path;
+                if (typeof fn === 'function' && typeof fn.path !== 'undefined') {
+                    const path: any = '/' + prefix + fn.path;
 
-                switch (fn.action) {
-                    case 'get': {
-                        console.info('Bind route: ' + fn.action + ' ' + path + ' for action: ' + [constructor.name, fn.name].join('.'));
-                        bluejs.router.get(path, fn);
-                        break
-                    }
+                    switch (fn.action) {
+                        case 'get': {
+                            console.info('Bind route: ' + fn.action + ' ' + path + ' for action: ' + [constructor.name, fn.name].join('.'));
+                            bluejs.router.get(path, fn);
+                            break;
+                        }
 
-                    // TODO
+                        // TODO
 
-                    default: {
-                        console.error('Invalid route: ' + path);
-                        break;
+                        default: {
+                            console.error('Invalid route: ' + path);
+                            break;
+                        }
                     }
                 }
-            }
-        });
+            });
+        };
     }
+
 }

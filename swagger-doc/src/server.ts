@@ -1,17 +1,18 @@
-import {Bluejs} from "./bluejs"
+import {Next, CreateServerOptions} from './bluejs/core';
+import {Bluejs} from './bluejs/core';
 
-const options = {
+const options: CreateServerOptions = {
     port: 3000,
     debug: true,
     middleware: [logMiddleware],
     srcDir: __dirname,
     bootstrapDir: 'modules',
-    bootstrapExt: 'module.ts'
+    bootstrapExt: 'module.ts',
 };
 
 new Bluejs(options);
 
-async function logMiddleware(ctx: any, next: any) {
+async function logMiddleware(ctx: any, next: Next): Promise<void> {
     console.log('Middleware execute - Url:', ctx.url);
 
     await next();
