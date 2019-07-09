@@ -25,7 +25,8 @@
   "homepage": "https://github.com/EMSA-TECHNOLOGY/blueprod-study#readme",
   "dependencies": {
     "koa": "^2.7.0",
-    "koa-router": "^7.4.0"
+    "koa-router": "^7.4.0",
+    "koa-swagger-decorator": "^1.5.16"
   },
   "devDependencies": {
     "@types/koa": "^2.0.49",
