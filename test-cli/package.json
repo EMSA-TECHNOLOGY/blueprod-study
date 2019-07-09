@@ -1,0 +1,25 @@
+{
+  "name": "test-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./index.js",
+  "preferGlobal": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "execute": "./index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "autocannon": "^4.0.0",
+    "autocannon-compare": "^0.4.0",
+    "chalk": "^2.4.2",
+    "cli-table": "^0.3.1",
+    "commander": "^2.20.0",
+    "inquirer": "^6.4.1",
+    "ora": "^3.4.0"
+  }
+}
