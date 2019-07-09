@@ -12,23 +12,22 @@ import {
     prefix
 } from 'koa-swagger-decorator';
 //
-const tag = tags(['Customer']);
+const tag = tags(['User']);
 //
 // const userSchema = {
 //     name: { type: 'string', required: true },
 //     password: { type: 'string', required: true }
 // };
 
-@prefix('/customer')
-@controller('customer')
-export default class CustomerController {
-
+@prefix('/company')
+@controller('company')
+export default class CompanyController {
     @request('get', '')
-    @summary('customer list')
+    @summary('user list')
     @tag
     @get('')
-    async getAll(ctx: any, next: Next) {
-        console.log('getCustomer');
+    async getCompany(ctx: any, next: Next) {
+        console.log('getUser');
 
         return next();
     }
@@ -65,7 +64,7 @@ export default class CustomerController {
 
 }
 
-const logTime = () => async (ctx, next) => {
+const logTime = () => async (ctx: any, next: any) => {
     console.log(`start: ${new Date()}`);
     await next();
     console.log(`end: ${new Date()}`);

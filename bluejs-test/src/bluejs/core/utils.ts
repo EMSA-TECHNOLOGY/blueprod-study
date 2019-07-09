@@ -10,7 +10,7 @@ export class Utils {
         for (const fileOrDir of filesAndFolders) {
             const fileStatus = fs.lstatSync(fileOrDir);
 
-            if (fileStatus.isFile && fileOrDir.includes(ext)) {
+            if (fileStatus.isFile() && fileOrDir.includes(ext)) {
                 await import(fileOrDir);
             } else if (fileStatus.isDirectory()) {
                 await Utils.bootstrap(fileOrDir, ext);

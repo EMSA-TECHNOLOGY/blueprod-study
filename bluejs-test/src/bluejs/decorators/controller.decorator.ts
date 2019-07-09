@@ -2,9 +2,20 @@ import {Constructor} from '../core';
 import {Bluejs} from '../core';
 
 export function controller(prefix: string) {
+    if (!Bluejs) {
+        setTimeout(function () {
+            return constructor(prefix);
+        }, 500);
+    } else {
+        return constructor(prefix);
+    }
+}
+
+
+function constructor (prefix: string) {
     const bluejs = new Bluejs();
 
-    return (constructor: Constructor) => {
+    return (constructor: any) => {
         const prototype = constructor.prototype;
 
         Object.getOwnPropertyNames(prototype).forEach((name) => {
@@ -30,5 +41,4 @@ export function controller(prefix: string) {
             }
         });
     };
-
 }

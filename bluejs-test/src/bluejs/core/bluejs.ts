@@ -4,6 +4,7 @@ import {join} from 'path';
 import {Utils} from './utils';
 
 import {Middleware, CreateServerOptions} from './interfaces';
+import swaggerRouter from "../../modules/index";
 
 export class Bluejs {
     private static singleton: Bluejs;
@@ -27,23 +28,27 @@ export class Bluejs {
         }
 
         this.app.use(this.router.routes());
+        // this.app.use((swaggerRouter as any).routes());
+
         this.app.listen(options.port);
         Bluejs.singleton = this;
-        Bluejs.bootstrap(options.srcDir, options.bootstrapDir, options.bootstrapExt);
-
-        console.info('Bluejs server running on port ' + options.port);
+        Bluejs.bootstrap(options.srcDir, options.bootstrapDir, options.bootstrapExt)
+            .then(() => {
+                console.info('Bluejs server running on port ' + options.port);
+            });
     }
 
-    static bootstrap(srcDir: string, bootstrapDir: string | string[], bootstrapExt: string) {
+    static async bootstrap(srcDir: string, bootstrapDir: string | string[], bootstrapExt: string) : Promise<void>{
         if (!bootstrapDir) {
             return;
         }
 
         bootstrapDir = Array.isArray(bootstrapDir) ? bootstrapDir : [bootstrapDir];
-        bootstrapDir.forEach(async (dir: string) => {
+
+        for (const dir of bootstrapDir) {
             const path = join(srcDir, dir);
 
             await Utils.bootstrap(path, bootstrapExt);
-        });
+        }
     }
 }
