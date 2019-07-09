@@ -27,17 +27,17 @@ export class Bluejs {
         }
 
         this.app.use(this.router.routes());
-        this.app.listen(options.port);
         Bluejs.singleton = this;
         Bluejs.bootstrap(options.srcDir, options.bootstrapDir, options.bootstrapExt)
             .then(() => {
-                var swaggerRouter = require("../../modules/index");
+                const swaggerRouter = require('../../modules/index');
                 this.app.use((swaggerRouter.default as any).routes());
+                this.app.listen(options.port);
                 console.info('Bluejs server running on port ' + options.port);
             });
     }
 
-    static async bootstrap(srcDir: string, bootstrapDir: string | string[], bootstrapExt: string) : Promise<void>{
+    static async bootstrap(srcDir: string, bootstrapDir: string | string[], bootstrapExt: string): Promise<void> {
         if (!bootstrapDir) {
             return;
         }
