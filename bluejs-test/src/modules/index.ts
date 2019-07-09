@@ -1,10 +1,9 @@
 import { SwaggerRouter } from 'koa-swagger-decorator';
 import CompanyRouter from './company';
-// import CustomerRouter from './customer';
 
 const swaggerRouter = new SwaggerRouter();
 
-// http://localhost:3000/api/v1/swagger-html: User API
+// http://localhost:3000/api/v1/swagger-html: Company API
 (swaggerRouter as any).use('/api/v1', (CompanyRouter as any).routes());
 
 // http://localhost:3000/api/v2/swagger-html: Customer API

@@ -4,7 +4,6 @@ import {join} from 'path';
 import {Utils} from './utils';
 
 import {Middleware, CreateServerOptions} from './interfaces';
-import swaggerRouter from "../../modules/index";
 
 export class Bluejs {
     private static singleton: Bluejs;
@@ -28,12 +27,12 @@ export class Bluejs {
         }
 
         this.app.use(this.router.routes());
-        // this.app.use((swaggerRouter as any).routes());
-
         this.app.listen(options.port);
         Bluejs.singleton = this;
         Bluejs.bootstrap(options.srcDir, options.bootstrapDir, options.bootstrapExt)
             .then(() => {
+                var swaggerRouter = require("../../modules/index");
+                this.app.use((swaggerRouter.default as any).routes());
                 console.info('Bluejs server running on port ' + options.port);
             });
     }
