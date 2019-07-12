@@ -28,13 +28,14 @@ function testingByInput() {
  * @param program {Object}
  * @param cmdOpts {Object}
  */
-function testingByCommand(program, cmdOpts = {}) {
-  if(!cmdOpts.url || !urlValidation.test(cmdOpts.url)) {
-    program.help();
+function testingByCommand(url, cmdOpts = {}) {
+  if(!url || !urlValidation.test(url)) {
+    console.log('The url format: http(s)://(www.)example.com');
     return;
   }
 
   cmdOpts = _reformatAutocannonObject(cmdOpts);
+  cmdOpts.url = url;
 
   doTest(cmdOpts);
 }
