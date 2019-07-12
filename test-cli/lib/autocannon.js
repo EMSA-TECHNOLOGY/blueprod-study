@@ -11,25 +11,44 @@ const access = promisify(fs.access);
 
 const resultsDirectory = path.join(process.cwd(), 'results');
 
-const writeResult = async (url, result) => {
+module.exports = {
+  fire
+};
+
+/**
+ * @param filename
+ * @param result
+ * @returns {Promise}
+ * @private
+ */
+async function _writeResult(filename = 'default', result) {
   try {
     await access(resultsDirectory)
   } catch (e) {
     await mkdir(resultsDirectory)
   }
 
-  result.server = url;
-
-  const dest = path.join(resultsDirectory, 'test.json');
+  const dest = path.join(resultsDirectory, `${filename}.json`);
   return writeFile(dest, JSON.stringify(result, null, 2))
-};
+}
 
-const run = async function (opts = {}) {
+/**
+ * @param opts
+ * @returns {Promise}
+ * @private
+ */
+async function _run(opts = {}) {
+  opts.title = opts.filename;
   const result = await autocannon(opts);
   return result;
-};
+}
 
-module.exports.fire = async (opts, save) => {
-  const result = await run(opts);
-  return save ? writeResult(opts.url, result) : null;
-};
+/**
+ * @param opts (user input or command options)
+ * @param save (true if save, false if not save)
+ * @returns {Promise}
+ */
+async function fire(opts, save) {
+  const result = await _run(opts);
+  return save ? _writeResult(opts.filename, result) : null;
+}

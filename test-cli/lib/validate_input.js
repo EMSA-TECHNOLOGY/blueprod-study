@@ -1,12 +1,21 @@
-#!/usr/bin/env node
 'use strict'
 
 const inquirer = require('inquirer');
 const urlValidation = new RegExp('\\b((http|https):\\/\\/?)[^\\s()<>]+(?:\\([\\w\\d]+\\)|([^[:punct:]\\s]|\\/?))', 'g');
-const doTest = require('./testing');
 
-module.exports = function () {
-  inquirer.prompt([
+module.exports = async function () {
+  const questions = [
+    {
+      type: 'input',
+      name: 'filename',
+      message: 'Insert your file name',
+      default: 'test',
+      validate(value) {
+        let input = value.toString();
+        return !input.includes('/') || 'Please enter a file name'
+      },
+      filter: String
+    },
     {
       type: 'input',
       name: 'connections',
@@ -47,7 +56,7 @@ module.exports = function () {
       },
       filter: String
     }
-  ]).then((opts) => {
-    doTest(opts);
-  });
+  ];
+
+  return inquirer.prompt(questions);
 };

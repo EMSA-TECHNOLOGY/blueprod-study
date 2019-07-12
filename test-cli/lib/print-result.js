@@ -1,13 +1,11 @@
-#!/usr/bin/env node
 'use strict'
 
 const chalk = require('chalk');
 const Table = require('cli-table');
 const {join} = require('path');
 const {readdirSync, readFileSync} = require('fs');
-const testing = require('./validate_input');
 
-function printResult(commander) {
+function printResult(cmdOpts) {
   const resultsPath = join(process.cwd(), 'results');
   let choices = readdirSync(resultsPath)
     .filter((file) => file.match(/(.+)\.json$/))
@@ -19,9 +17,9 @@ function printResult(commander) {
   if (!choices.length) {
     console.log(choices.length);
     console.log(chalk.red('Benchmark to gather some results to compare.'))
-  } else if (commander.table && !commander.percentage) {
+  } else if (cmdOpts.table) {
     const table = new Table({
-      head: ['Url', 'Router', 'Requests/s', 'Latency', 'Throughput/Mb']
+      head: ['Url', 'Connections', 'Pipelining', 'Duration', 'Requests/s', 'Latency', 'Throughput/Mb']
     });
 
     choices.forEach((result) => {
@@ -31,7 +29,9 @@ function printResult(commander) {
       const {hasRouter = false} = {};
       table.push([
         bold(beBold, chalk.blue(data.url)),
-        bold(beBold, hasRouter ? '✓' : '✗'),
+        bold(beBold, (data.connections)),
+        bold(beBold, (data.pipelining)),
+        bold(beBold, (data.duration)),
         bold(beBold, (data.requests.average).toFixed(1)),
         bold(beBold, (data.latency.average).toFixed(2)),
         bold(beBold, (data.throughput.average / 1024 / 1024).toFixed(2))
@@ -39,7 +39,7 @@ function printResult(commander) {
     });
 
     console.log(table.toString())
-  } else if (commander.percentage) {
+  } else if (cmdOpts.percentage) {
     let data = [];
     choices.forEach(file => {
       let content = readFileSync(`${resultsPath}/${file}.json`);
@@ -57,7 +57,9 @@ function printResult(commander) {
     const table = new Table({
       head: [
         'Url',
-        'Router',
+        'Connections',
+        'Pipelining',
+        'Duration',
         `Requests/s`,
         `Latency`,
         `Throughput/Mb`
@@ -70,7 +72,9 @@ function printResult(commander) {
 
       table.push([
         bold(beBold, chalk.blue(result.url)),
-        bold(beBold, hasRouter ? '✓' : '✗'),
+        bold(beBold, (result.connections)),
+        bold(beBold, (result.pipelining)),
+        bold(beBold, (result.duration)),
         bold(beBold, `${result.requests.mean}\n(${getPct(base.request, result.requests.mean)})`),
         bold(beBold, `${result.latency.mean}\n(${getPct(base.latency, result.latency.mean)})`),
         bold(beBold, `${(result.throughput.mean / 1024 / 1024).toFixed(2)}\n(${getPct(base.throughput, result.throughput.mean)})`)
@@ -79,7 +83,7 @@ function printResult(commander) {
 
     console.log(table.toString())
   } else {
-    testing();
+    // do something
   }
 }
 

@@ -1,25 +1,33 @@
 #!/usr/bin/env node
 
 const program = require('commander');
-const testing = require('./lib/validate_input');
-const printResult = require('./lib/print-result');
+const blue_prod = require('./lib/run');
+const optionLoader = require('./lib/options_loader');
+
+program
+  .version(require('./package.json').version);
 
 program
   .command('test')              // sub-command name
   .alias('t')                   // alternative sub-command is `t`
   .description('testing server') // command description
   .action(function () {          // function to execute when command is uses
-    testing();
+    blue_prod.testingByInput();
   });
 
 program
   .command('print')
   .alias('p')
   .description('print result')
+  .option('-%, --percentage', 'percentage')
   .option('-t, --table', 'table')
-  .option('-p, --percentage', 'percentage')
   .action(function (cmd) {
-    printResult(cmd);
+    blue_prod.printResult(cmd.opts());
   });
 
+optionLoader(program);
+
 program.parse(process.argv);
+
+blue_prod.testingByCommand(program, program.opts());
+
