@@ -1,7 +1,7 @@
 {
-  "name": "test-cli",
-  "version": "1.0.0",
-  "description": "",
+  "name": "blueprod-benchmark",
+  "version": "0.1.0",
+  "description": "Web server performance tester",
   "main": "./index.js",
   "preferGlobal": true,
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "autocannon": "^4.0.0",
     "autocannon-compare": "^0.4.0",
