@@ -40,10 +40,14 @@ module.exports.setup = function(app) {
   /**
    * @swagger
    * tags:
-   *   - name: Login
-   *     description: Login
    *   - name: Accounts
    *     description: Accounts
+   *   - name: Login
+   *     description: Login
+   *   - name: Phone
+   *     description: Phone number
+   *   - name: Test
+   *     description: Test
    */
 
   /**
@@ -59,11 +63,7 @@ module.exports.setup = function(app) {
    *       - application/json
    *     parameters:
    *       - $ref: '#/parameters/username'
-   *       - name: password
-   *         description: User's password.
-   *         in: formData
-   *         required: true
-   *         type: string
+   *       - $ref: '#/parameters/password'
    *     responses:
    *       200:
    *         description: login
@@ -71,7 +71,7 @@ module.exports.setup = function(app) {
    *           $ref: '#/definitions/Login'
    */
   app.post('/login', (req, res) => {
-    res.json(req.body);formData
+    res.json(req.body);
   });
 
   /**
@@ -112,4 +112,124 @@ module.exports.setup = function(app) {
   app.post('/users', (req, res) => {
     res.json(req.body);
   });
+
+  /**
+   * @swagger
+   * /phonevn:
+   *   post:
+   *     summary: test VN phone number
+   *     description: test VN phone number
+   *     tags: [Phone]
+   *     consumes:
+   *       - application/json
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - $ref: '#/parameters/phoneVN'
+   *     responses:
+   *       200:
+   *         description: login
+   *         schema:
+   *           $ref: '#/definitions/Login'
+   */
+  app.post('/phonevn', (req, res) => {
+    res.json(req.body);
+  });
+
+  /**
+   * @swagger
+   * /phoneenum:
+   *   post:
+   *     summary: Select one phone
+   *     description: Select one phone number
+   *     tags: [Phone]
+   *     consumes:
+   *       - application/json
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - $ref: '#/parameters/phoneEnum'
+   *     responses:
+   *       200:
+   *         description: login
+   *         schema:
+   *           $ref: '#/definitions/Login'
+   */
+  app.post('/phoneenum', (req, res) => {
+    res.json(req.body);
+  });
+
+  /**
+   * @swagger
+   * /number:
+   *   post:
+   *     summary: Select one phone
+   *     description: Select one phone number
+   *     tags: [Test]
+   *     consumes:
+   *       - application/json
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - $ref: '#/parameters/number'
+   *     responses:
+   *       200:
+   *         description: login
+   *         schema:
+   *           $ref: '#/definitions/Login'
+   */
+  app.post('/number', (req, res) => {
+    res.json(req.body);
+  });
 };
+
+/**
+ * @swagger
+ *   parameters:
+ *     number:
+ *       name: number
+ *       description: number with min 2 max 200 multipleOf 10
+ *       in: query
+ *       required: true
+ *       type: number
+ *       minimum: 2
+ *       maximum: 200
+ *       multipleOf: 10
+ */
+
+/**
+ * @swagger
+ *   parameters:
+ *     phoneVN:
+ *       name: phone
+ *       description: VN phone number (09)+([0-9]{8})\b
+ *       in: query
+ *       required: true
+ *       type: string
+ *       pattern: (09)+([0-9]{8})\b
+ */
+
+/**
+ * @swagger
+ *   parameters:
+ *     phoneEnum:
+ *       name: phone
+ *       description: Select one in available array
+ *       in: query
+ *       required: true
+ *       type: number
+ *       enum: [0912345678, 0987654321, 123457890]
+ */
+
+/**
+ * @swagger
+ *   parameters:
+ *     password:
+ *       name: password
+ *       description: "User password (min: 2 - max: 128)"
+ *       in: formData
+ *       required: true
+ *       type: string
+ *       minLength: 2
+ *       maxLength: 128
+ */

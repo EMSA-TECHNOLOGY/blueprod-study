@@ -8,6 +8,9 @@ const routes2 = require('./routes2');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
+const fs = require('fs');
+const yaml = require('js-yaml');
+
 const PORT = process.env.PORT || 3000;
 
 // Initialize express
@@ -50,6 +53,8 @@ const options = {
 
 // Initialize swagger-jsdoc -> returns validated swagger spec in json format
 const swaggerSpec = swaggerJSDoc(options);
+fs.writeFileSync('api-docs.yaml', yaml.dump(swaggerSpec));
+
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // const pathToSwaggerUi = swaggerUi.absolutePath();

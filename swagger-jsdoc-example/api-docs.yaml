@@ -1,0 +1,186 @@
+info:
+  title: Swagger-jsdoc
+  version: 0.0.1
+  description: A sample API
+host: 'localhost:3000'
+basePath: /
+consumes:
+  - application/x-www-form-urlencoded
+  - multipart/form-data
+swagger: '2.0'
+paths:
+  /:
+    get:
+      summary: Say Hello world
+      description: Returns the homepage
+      responses:
+        '200':
+          description: hello world
+  /login:
+    post:
+      summary: Login to website
+      description: Login to the application
+      tags:
+        - Users
+        - Login
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/username'
+        - $ref: '#/parameters/password'
+      responses:
+        '200':
+          description: login
+          schema:
+            $ref: '#/definitions/Login'
+  /users:
+    get:
+      summary: Returns users
+      description: Returns users
+      tags:
+        - Users
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: users
+    post:
+      summary: Update user
+      description: Update user
+      tags:
+        - Users
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/username'
+      responses:
+        '200':
+          description: users
+  /phonevn:
+    post:
+      summary: test VN phone number
+      description: test VN phone number
+      tags:
+        - Phone
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/phoneVN'
+      responses:
+        '200':
+          description: login
+          schema:
+            $ref: '#/definitions/Login'
+  /phoneenum:
+    post:
+      summary: Select one phone
+      description: Select one phone number
+      tags:
+        - Phone
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/phoneEnum'
+      responses:
+        '200':
+          description: login
+          schema:
+            $ref: '#/definitions/Login'
+  /number:
+    post:
+      summary: Select one phone
+      description: Select one phone number
+      tags:
+        - Test
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/number'
+      responses:
+        '200':
+          description: login
+          schema:
+            $ref: '#/definitions/Login'
+  /hello:
+    get:
+      summary: Say Hello world in v2
+      description: Returns the homepage
+      responses:
+        '200':
+          description: hello world
+definitions:
+  Login:
+    required:
+      - username
+      - password
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+      path:
+        type: string
+responses: {}
+parameters:
+  number:
+    name: number
+    description: number with min 2 max 200 multipleOf 10
+    in: query
+    required: true
+    type: number
+    minimum: 2
+    maximum: 200
+    multipleOf: 10
+  phoneVN:
+    name: phone
+    description: 'VN phone number (09)+([0-9]{8})\b'
+    in: query
+    required: true
+    type: string
+    pattern: '(09)+([0-9]{8})\b'
+  phoneEnum:
+    name: phone
+    description: Select one in available array
+    in: query
+    required: true
+    type: number
+    enum:
+      - 0912345678
+      - 0987654321
+      - 123457890
+  password:
+    name: password
+    description: 'User password (min: 2 - max: 128)'
+    in: formData
+    required: true
+    type: string
+    minLength: 2
+    maxLength: 128
+  username:
+    name: username
+    description: Username to use for login.
+    in: formData
+    required: true
+    type: string
+    maxLength: 8
+    minLength: 2
+securityDefinitions: {}
+tags:
+  - name: Users
+    description: User management and login
+  - name: Accounts
+    description: Accounts
+  - name: Login
+    description: Login
+  - name: Phone
+    description: Phone number
+  - name: Test
+    description: Test
