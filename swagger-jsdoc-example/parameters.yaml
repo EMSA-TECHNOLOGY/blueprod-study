@@ -1,7 +1,9 @@
-parameters:
-  username:
-    name: username
-    description: Username to use for login.
-    in: formData
-    required: true
-    type: string
+components:
+  parameters:
+    username:
+      name: username
+      description: Username to use for login.
+      in: query
+      required: true
+      schema:
+        type: string

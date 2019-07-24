@@ -3,13 +3,15 @@
 // Dependencies
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const routes = require('./routes');
 const routes2 = require('./routes2');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const { OpenApiValidator } = require("express-openapi-validate");
 
 const fs = require('fs');
-const yaml = require('js-yaml');
+const jsYaml = require('js-yaml');
 
 const PORT = process.env.PORT || 3000;
 
@@ -22,24 +24,21 @@ app.use(
     extended: true,
   })
 );
+app.use(cors());
 
 
 // Swagger definition
 // You can set every attribute except paths and swagger
 // https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md
 const swaggerDefinition = {
+  openapi: '3.0.0',
   info: {
     // API informations (required)
     title: 'Swagger-jsdoc', // Title (required)
     version: require('./package').version, // Version (required)
     description: 'A sample API', // Description (optional)
   },
-  host: `localhost:${PORT}`, // Host (optional)
-  basePath: '/', // Base path (optional)swaggerSpec
-  consumes: [
-    'application/x-www-form-urlencoded',
-    'multipart/form-data'
-  ]
+  servers: [ {url: `http://localhost:${PORT}/`}],
 };
 
 // Options for the swagger docs
@@ -48,17 +47,14 @@ const options = {
   swaggerDefinition,
   // Path to the API docs
   // Note that this path is relative to the current directory from which the Node.js is ran, not the application itself.
-  apis: ['./routes*.js', './parameters.yaml'],
+  apis: ['./routes*.js'],
 };
 
 // Initialize swagger-jsdoc -> returns validated swagger spec in json format
 const swaggerSpec = swaggerJSDoc(options);
-fs.writeFileSync('api-docs.yaml', yaml.dump(swaggerSpec));
+const validator = new OpenApiValidator(swaggerSpec, {ajvOptions: { coerceTypes: true }});
 
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-// const pathToSwaggerUi = swaggerUi.absolutePath();
-// app.use('/test', express.static(pathToSwaggerUi));
 
 // Serve swagger docs the way you like (Recommendation: swagger-tools)
 app.get('/doc.json', (req, res) => {
@@ -67,9 +63,8 @@ app.get('/doc.json', (req, res) => {
 });
 
 // Set up the routes
-routes.setup(app);
+routes.setup(app, validator);
 routes2.setup(app);
-
 // Start the server
 const server = app.listen(PORT, () => {
   const { port } = server.address();
@@ -78,3 +73,4 @@ const server = app.listen(PORT, () => {
   console.log('http://localhost:%s/doc.json to see api json document', port);
   console.log('http://localhost:%s/swagger to see api json document in UI', port);
 });
+

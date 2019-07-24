@@ -1,5 +1,5 @@
 // Sets up the routes.
-module.exports.setup = function(app) {
+module.exports.setup = function (app, validator) {
   /**
    * @swagger
    * /:
@@ -16,22 +16,6 @@ module.exports.setup = function(app) {
 
   /**
    * @swagger
-   * definitions:
-   *   Login:
-   *     required:
-   *       - username
-   *       - password
-   *     properties:
-   *       username:
-   *         type: string
-   *       password:
-   *         type: string
-   *       path:
-   *         type: string
-   */
-
-  /**
-   * @swagger
    * tags:
    *   name: Users
    *   description: User management and login
@@ -40,39 +24,11 @@ module.exports.setup = function(app) {
   /**
    * @swagger
    * tags:
-   *   - name: Accounts
-   *     description: Accounts
-   *   - name: Login
-   *     description: Login
    *   - name: Phone
    *     description: Phone number
    *   - name: Test
    *     description: Test
    */
-
-  /**
-   * @swagger
-   * /login:
-   *   post:
-   *     summary: Login to website
-   *     description: Login to the application
-   *     tags: [Users, Login]
-   *     consumes:
-   *       - application/x-www-form-urlencoded
-   *     produces:
-   *       - application/json
-   *     parameters:
-   *       - $ref: '#/parameters/username'
-   *       - $ref: '#/parameters/password'
-   *     responses:
-   *       200:
-   *         description: login
-   *         schema:
-   *           $ref: '#/definitions/Login'
-   */
-  app.post('/login', (req, res) => {
-    res.json(req.body);
-  });
 
   /**
    * @swagger
@@ -82,8 +38,6 @@ module.exports.setup = function(app) {
    *     description: Returns users
    *     tags:
    *      - Users
-   *     produces:
-   *      - application/json
    *     responses:
    *       200:
    *         description: users
@@ -101,10 +55,6 @@ module.exports.setup = function(app) {
    *     summary: Update user
    *     description: Update user
    *     tags: [Users]
-   *     produces:
-   *       - application/json
-   *     parameters:
-   *       - $ref: '#/parameters/username'
    *     responses:
    *       200:
    *         description: users
@@ -115,121 +65,176 @@ module.exports.setup = function(app) {
 
   /**
    * @swagger
-   * /phonevn:
-   *   post:
-   *     summary: test VN phone number
-   *     description: test VN phone number
-   *     tags: [Phone]
-   *     consumes:
-   *       - application/json
-   *     produces:
-   *       - application/json
-   *     parameters:
-   *       - $ref: '#/parameters/phoneVN'
-   *     responses:
-   *       200:
-   *         description: login
-   *         schema:
-   *           $ref: '#/definitions/Login'
-   */
-  app.post('/phonevn', (req, res) => {
-    res.json(req.body);
-  });
-
-  /**
-   * @swagger
-   * /phoneenum:
-   *   post:
-   *     summary: Select one phone
-   *     description: Select one phone number
-   *     tags: [Phone]
-   *     consumes:
-   *       - application/json
-   *     produces:
-   *       - application/json
-   *     parameters:
-   *       - $ref: '#/parameters/phoneEnum'
-   *     responses:
-   *       200:
-   *         description: login
-   *         schema:
-   *           $ref: '#/definitions/Login'
-   */
-  app.post('/phoneenum', (req, res) => {
-    res.json(req.body);
-  });
-
-  /**
-   * @swagger
    * /number:
-   *   post:
-   *     summary: Select one phone
-   *     description: Select one phone number
+   *   get:
+   *     summary: test number
+   *     description: test number
    *     tags: [Test]
-   *     consumes:
-   *       - application/json
-   *     produces:
-   *       - application/json
    *     parameters:
-   *       - $ref: '#/parameters/number'
+   *       - $ref: '#/components/parameters/phoneEnum'
    *     responses:
    *       200:
-   *         description: login
-   *         schema:
-   *           $ref: '#/definitions/Login'
+   *         description: test number
    */
-  app.post('/number', (req, res) => {
-    res.json(req.body);
+  app.get('/number', validator.validate('get','/number'), (req, res) => {
+    res.json({num: 3});
+  });
+
+  /**
+   * @swagger
+   * /test:
+   *   post:
+   *     summary: test
+   *     description: test
+   *     tags: [Test]
+   *     requestBody:
+   *       $ref: '#/components/requestBodies/numObject'
+   *     responses:
+   *       200:
+   *         description: number
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 num:
+   *                   type: number
+   */
+  app.post('/test',validator.validate("post", "/test"), (req, res) => {
+    res.json({
+      num: 3
+    });
+  });
+
+  app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500;
+    res.status(statusCode).json({
+      error: {
+        name: err.name,
+        message: err.message,
+        data: err.data,
+      },
+    });
   });
 };
 
+
 /**
- * @swagger
- *   parameters:
- *     number:
- *       name: number
- *       description: number with min 2 max 200 multipleOf 10
- *       in: query
- *       required: true
- *       type: number
- *       minimum: 2
- *       maximum: 200
- *       multipleOf: 10
+ * Parameters with content are currently not displayed and cannot be used in "try it out" requests in swagger-ui
+ * and not supported by express-openapi-validate to validate
  */
 
 /**
+ * express-openapi-validate supports validate parameters in path and query with type string
+ */
+/**
  * @swagger
+ * components:
  *   parameters:
  *     phoneVN:
  *       name: phone
  *       description: VN phone number (09)+([0-9]{8})\b
  *       in: query
  *       required: true
- *       type: string
- *       pattern: (09)+([0-9]{8})\b
- */
-
-/**
- * @swagger
- *   parameters:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: string
+ *             pattern: '(09)+([0-9]{8})\b'
  *     phoneEnum:
  *       name: phone
  *       description: Select one in available array
  *       in: query
  *       required: true
- *       type: number
- *       enum: [0912345678, 0987654321, 123457890]
+ *       schema:
+ *         type: array
+ *         items:
+ *           type: number
+ *           maximum: 5
+ *           exclusiveMaximum: true
+ *         minItems: 3
+ *         maxItems: 5
+ *         uniqueItems: true
+ *     password:
+ *       name: password
+ *       description: "User password (min: 2 - max: 128)"
+ *       in: query
+ *       required: true
+ *       schema:
+ *         type: string
+ *         minLength: 2
+ *         maxLength: 128
  */
 
 /**
  * @swagger
- *   parameters:
- *     password:
- *       name: password
- *       description: "User password (min: 2 - max: 128)"
- *       in: formData
- *       required: true
- *       type: string
- *       minLength: 2
- *       maxLength: 128
+ * components:
+ *   requestBodies:
+ *     numObject:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             maxProperties: 3
+ *             minProperties: 1
+ *             type: object
+ *             required: [num]
+ *             properties:
+ *               num:
+ *                 type: number
+ *                 minimum: 2
+ *                 maximum: 10
+ *                 multipleOf: 2
+ *               arr:
+ *                 type: array
+ *                 items:
+ *                   type: number
+ *                   maximum: 5
+ *                   exclusiveMaximum: true
+ *                 minItems: 1
+ *                 maxItems: 3
+ *                 uniqueItems: true
+ *   schemas:
+ *     Pet:
+ *       type: object
+ *       required:
+ *         - petType
+ *       properties:
+ *         petType:
+ *           type: string
+ *     Cat:
+ *       allOf:
+ *         - $ref: '#/components/schemas/Pet'
+ *         - type: object
+ *           properties:
+ *             name:
+ *               type: string
+ *     Dog:
+ *       allOf:
+ *         - $ref: '#/components/schemas/Pet'
+ *         - type: object
+ *           properties:
+ *             name:
+ *               type: string
+ *     Lizard:
+ *       allOf:
+ *         - $ref: '#/components/schemas/Pet'
+ *         - type: object
+ *           properties:
+ *             name:
+ *               type: string
+ *   responses:
+ *     MyResponseType:
+ *       description: resoonse object
+ *       content:
+ *         application/json:
+ *           schema:
+ *             oneOf:
+ *             - $ref: '#/components/schemas/Cat'
+ *             - $ref: '#/components/schemas/Dog'
+ *             - $ref: '#/components/schemas/Lizard'
+ *             discriminator:
+ *               propertyName: petType
+ *               mapping:
+ *                 dog: '#/components/schemas/Dog'
  */
+
